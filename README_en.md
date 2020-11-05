@@ -44,13 +44,13 @@ cd authorizer
 
 To run the tests, type the command below:
 
-```dockerfile
+```shell script
  docker run --rm -v $PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean test
 ```
 
 To build the project:
 
-```dockerfile
+```shell script
  docker run --rm -v $PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean package
 ```
 
@@ -58,7 +58,7 @@ To build the project:
 
 To build the project:
 
-```dockerfile
+```shell script
  docker run --rm -v $PWD:/app -w/app openjdk:11 java -jar ./target/authorizer-1.0-SNAPSHOT.jar ./operations
 ```
 
