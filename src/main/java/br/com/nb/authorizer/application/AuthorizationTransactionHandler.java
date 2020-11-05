@@ -3,7 +3,7 @@ package br.com.nb.authorizer.application;
 import br.com.nb.authorizer.application.dto.InputTransaction;
 import br.com.nb.authorizer.application.dto.OutputAccount;
 import br.com.nb.authorizer.domain.AuthorizationTransaction;
-import br.com.nb.authorizer.wrapper.JsonMapper;
+import br.com.nb.authorizer.application.wrapper.JsonMapper;
 
 public class AuthorizationTransactionHandler implements OperationHandler {
   private final AuthorizationTransaction authorizationTransaction;

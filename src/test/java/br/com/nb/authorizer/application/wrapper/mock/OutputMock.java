@@ -1,4 +1,4 @@
-package br.com.nb.authorizer.wrapper.mock;
+package br.com.nb.authorizer.application.wrapper.mock;
 
 public class OutputMock {
   private String fullName;

@@ -1,4 +1,4 @@
-package br.com.nb.authorizer.wrapper;
+package br.com.nb.authorizer.application.wrapper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

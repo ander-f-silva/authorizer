@@ -3,7 +3,7 @@ package br.com.nb.authorizer.application;
 import br.com.nb.authorizer.application.dto.InputAccount;
 import br.com.nb.authorizer.application.dto.OutputAccount;
 import br.com.nb.authorizer.domain.AccountCreation;
-import br.com.nb.authorizer.wrapper.JsonMapper;
+import br.com.nb.authorizer.application.wrapper.JsonMapper;
 
 public class AccountCreationHandler implements OperationHandler {
   private final AccountCreation accountCreation;

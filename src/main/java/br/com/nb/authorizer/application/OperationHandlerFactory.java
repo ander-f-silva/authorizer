@@ -6,7 +6,7 @@ import br.com.nb.authorizer.domain.AccountCreation;
 import br.com.nb.authorizer.domain.AuthorizationTransaction;
 import br.com.nb.authorizer.domain.repository.Repository;
 import br.com.nb.authorizer.infrastructure.StorageInMemoryConfig;
-import br.com.nb.authorizer.wrapper.JsonMapper;
+import br.com.nb.authorizer.application.wrapper.JsonMapper;
 
 import java.util.HashMap;
 import java.util.Map;

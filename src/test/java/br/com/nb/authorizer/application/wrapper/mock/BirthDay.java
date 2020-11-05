@@ -1,4 +1,4 @@
-package br.com.nb.authorizer.wrapper.mock;
+package br.com.nb.authorizer.application.wrapper.mock;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
