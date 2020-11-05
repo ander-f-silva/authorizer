@@ -45,13 +45,13 @@ cd authorizer
 To run the tests, type the command below:
 
 ```dockerfile
- docker run --rm -v $ PWD: / app -w / app maven: 3.6.3-jdk-11 mvn clean test
+ docker run --rm -v $PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean test
 ```
 
 To build the project:
 
 ```dockerfile
- docker run --rm -v $ PWD: / app -w / app maven: 3.6.3-jdk-11 mvn clean package
+ docker run --rm -v $ PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean package
 ```
 
 ***Note***: Unfortunately and even for the time being, I was unable to make a way that before running the tests or performing the buil, it is not downloading the maven's dependencies.
@@ -59,7 +59,7 @@ To build the project:
 To build the project:
 
 ```java
- docker run --rm -v $ PWD: / app -w / app openjdk: 11 java -jar ./target/authorizer-1.0-SNAPSHOT.jar ./operations
+ docker run --rm -v $PWD:/app -w/app openjdk:11 java -jar ./target/authorizer-1.0-SNAPSHOT.jar ./operations
 ```
 
 ***Note***: For this version it is important to include the file with jsons in the project root before performing the flow, you can include several and execute the command by changing only the file name.
