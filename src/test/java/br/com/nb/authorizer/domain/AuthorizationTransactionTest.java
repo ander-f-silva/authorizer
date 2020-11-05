@@ -78,6 +78,22 @@ class AuthorizationTransactionTest {
     assertEquals(expected, outputAccount);
   }
 
+  @Test
+  @DisplayName("not should authorized transaction to doubled transaction")
+  public void testNotAuthorizedTransactionToDoubledTransaction() {
+    Repository<Account> mockRepository = createRepositoryMock(Arrays.asList(new Account(true, 20)));
+
+    var authorizationTransaction = new AuthorizationTransaction(mockRepository);
+    var outputAccount =
+        authorizationTransaction.authorize(
+            new InputTransaction(new TransactionRef("Merchant Test", 200, new Date())));
+
+    var expected =
+        new OutputAccount(new AccountRef(true, 20), new String[] {"doubled-transaction"});
+
+    assertEquals(expected, outputAccount);
+  }
+
   private Repository<Account> createRepositoryMock(List<Account> mockAccounts) {
     var mockRepository =
         new Repository<Account>() {

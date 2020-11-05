@@ -16,4 +16,12 @@ class Transaction {
   public long getAmount() {
     return amount;
   }
+
+  public Date getTime() {
+    return time;
+  }
+
+  public String getMerchant() {
+    return merchant;
+  }
 }

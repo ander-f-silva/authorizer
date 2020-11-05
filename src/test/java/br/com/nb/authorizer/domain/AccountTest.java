@@ -3,6 +3,8 @@ package br.com.nb.authorizer.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,61 +36,101 @@ class AccountTest {
     assertEquals(expectedAvailableLimit, account.getAvailableLimit());
   }
 
-//  @Test
-//  @DisplayName("should verify if account has sufficient limit")
-//  public void testHasSufficientLimit() {
-//    var account = new Account(true, 100);
-//    assertTrue(account.hasSufficientLimit(50));
-//  }
+  @Test
+  @DisplayName("should verify if account has sufficient limit")
+  public void testHasSufficientLimit() {
+    var account = new Account(true, 100);
+    assertFalse(account.hasNotSufficientLimit(50));
+  }
 
   @Test
   @DisplayName("should verify if account not has sufficient limit")
   public void testNotHasSufficientLimit() {
-    var account = new Account(false, 100);
-    assertFalse(account.hasSufficientLimit(200));
+    var account = new Account(true, 100);
+    assertTrue(account.hasNotSufficientLimit(200));
   }
 
   @Test
   @DisplayName("should verify if account high frequency small interval")
   public void testHighFrequencySmallInterval() {
-    var account = new Account(false, 100);
-    var transaction = new Transaction("Merchant Test", 120, new Date());
+    var account = new Account(true, 100);
 
-    account.authorizedTransaction(transaction);
+    var now = new Date();
 
-    assertTrue(account.hasHighFrequencySmallInterval());
+    var penultimateTransaction = new Transaction("Penultimate Merchant", 10, now);
+    account.authorizedTransaction(penultimateTransaction);
+
+    var lastedTransaction = new Transaction("Lasted Merchant", 20, now);
+    account.authorizedTransaction(lastedTransaction);
+
+    var currentTransaction = new Transaction("Current Merchant", 30, now);
+
+    assertTrue(account.hasHighFrequencySmallInterval(currentTransaction));
   }
 
   @Test
   @DisplayName("should verify if account not high frequency small interval")
   public void testNotHighFrequencySmallInterval() {
-    var account = new Account(false, 100);
-    var transaction = new Transaction("Merchant Test", 120, new Date());
+    var account = new Account(true, 100);
 
-    account.authorizedTransaction(transaction);
+    var penultimateDate = new Date()
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+            .minusMinutes(1);
 
-    assertFalse(account.hasHighFrequencySmallInterval());
+    var latestDate = new Date()
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+            .minusMinutes(2);
+
+    var currentDate =  new Date();
+
+    var penultimateTransaction = new Transaction("Penultimate Merchant", 10, Date.from(penultimateDate.atZone(ZoneId.systemDefault()).toInstant()));
+    account.authorizedTransaction(penultimateTransaction);
+
+    var lastedTransaction = new Transaction("Lasted Merchant", 20, Date.from(latestDate.atZone(ZoneId.systemDefault()).toInstant()));
+    account.authorizedTransaction(lastedTransaction);
+
+    var currentTransaction = new Transaction("Current Merchant", 30, currentDate);
+
+    assertFalse(account.hasHighFrequencySmallInterval(currentTransaction));
   }
 
   @Test
   @DisplayName("should verify if account has doubled transaction")
   public void testHasDoubledTransaction() {
-    var account = new Account(false, 100);
-    var transaction = new Transaction("Merchant Test", 120, new Date());
+    var account = new Account(true, 100);
 
-    account.authorizedTransaction(transaction);
+    var now = new Date();
 
-    assertTrue(account.hasHighFrequencySmallInterval());
+    var lastedTransaction = new Transaction("Merchant Test", 20, now);
+    account.authorizedTransaction(lastedTransaction);
+
+    var currentTransaction = new Transaction("Merchant Test", 20, now);
+
+    assertTrue(account.hasDoubledTransaction(currentTransaction));
   }
 
   @Test
   @DisplayName("should verify if account not has doubled transaction")
   public void testNotHasDoubledTransaction() {
-    var account = new Account(false, 100);
-    var transaction = new Transaction("Merchant Test", 120, new Date());
+    var account = new Account(true, 100);
 
-    account.authorizedTransaction(transaction);
+    var latestDate = new Date()
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+            .minusMinutes(2);
 
-    assertFalse(account.hasHighFrequencySmallInterval());
+    var now = new Date();
+
+    var lastedTransaction = new Transaction("Merchant Test", 20, Date.from(latestDate.atZone(ZoneId.systemDefault()).toInstant()));
+    account.authorizedTransaction(lastedTransaction);
+
+    var currentTransaction = new Transaction("Merchant Test", 20, now);
+
+    assertFalse(account.hasDoubledTransaction(currentTransaction));
   }
 }

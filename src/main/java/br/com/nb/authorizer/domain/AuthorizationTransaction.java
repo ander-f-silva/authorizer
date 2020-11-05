@@ -48,10 +48,12 @@ public class AuthorizationTransaction {
   private Set<String> verifyIfOperationHasViolation(Account account, Transaction transaction) {
     Map<String, Boolean> violations = new HashMap<>(4);
 
-    violations.put(MESSAGE_CARD_NOT_ACTIVE, !account.isActiveCard());
-    violations.put(MESSAGE_INSUFFICIENT_LIMIT, account.hasSufficientLimit(transaction.getAmount()));
-    violations.put(MESSAGE_HIGH_FREQUENCY_SMALL_INTERVAL, account.hasHighFrequencySmallInterval());
-    violations.put(MESSAGE_DOUBLED_TRANSACTION, account.hasDoubledTransaction());
+    violations.put(MESSAGE_CARD_NOT_ACTIVE, account.isNotActiveCard());
+    violations.put(
+        MESSAGE_INSUFFICIENT_LIMIT, account.hasNotSufficientLimit(transaction.getAmount()));
+    violations.put(
+        MESSAGE_HIGH_FREQUENCY_SMALL_INTERVAL, account.hasHighFrequencySmallInterval(transaction));
+    violations.put(MESSAGE_DOUBLED_TRANSACTION, account.hasDoubledTransaction(transaction));
 
     Set<String> messages = new HashSet<>();
 
