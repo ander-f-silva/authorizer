@@ -51,9 +51,9 @@ public class AuthorizationTransaction {
     violations.put(MESSAGE_CARD_NOT_ACTIVE, account.isNotActiveCard());
     violations.put(
         MESSAGE_INSUFFICIENT_LIMIT, account.hasNotSufficientLimit(transaction.getAmount()));
+    violations.put(MESSAGE_DOUBLED_TRANSACTION, account.hasDoubledTransaction(transaction));
     violations.put(
         MESSAGE_HIGH_FREQUENCY_SMALL_INTERVAL, account.hasHighFrequencySmallInterval(transaction));
-    violations.put(MESSAGE_DOUBLED_TRANSACTION, account.hasDoubledTransaction(transaction));
 
     Set<String> messages = new HashSet<>();
 

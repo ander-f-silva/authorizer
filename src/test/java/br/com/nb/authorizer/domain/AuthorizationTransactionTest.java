@@ -65,15 +65,25 @@ class AuthorizationTransactionTest {
   @Test
   @DisplayName("not should authorized transaction to high frequency small interval")
   public void testNotAuthorizedTransactionToHighFrequencySmallInterval() {
-    Repository<Account> mockRepository = createRepositoryMock(Arrays.asList(new Account(true, 20)));
+    var account = new Account(true, 100);
+
+    var now = new Date();
+
+    var penultimateTransaction = new Transaction("Penultimate Merchant", 10, now);
+    account.authorizedTransaction(penultimateTransaction);
+
+    var lastedTransaction = new Transaction("Lasted Merchant", 20, now);
+    account.authorizedTransaction(lastedTransaction);
+
+    Repository<Account> mockRepository = createRepositoryMock(Arrays.asList(account));
 
     var authorizationTransaction = new AuthorizationTransaction(mockRepository);
     var outputAccount =
         authorizationTransaction.authorize(
-            new InputTransaction(new TransactionRef("Merchant Test", 200, new Date())));
+            new InputTransaction(new TransactionRef("Current Merchant", 30, now)));
 
     var expected =
-        new OutputAccount(new AccountRef(true, 20), new String[] {"high-frequency-small-interval"});
+        new OutputAccount(new AccountRef(true, 60), new String[] {"high-frequency-small-interval"});
 
     assertEquals(expected, outputAccount);
   }
@@ -81,15 +91,22 @@ class AuthorizationTransactionTest {
   @Test
   @DisplayName("not should authorized transaction to doubled transaction")
   public void testNotAuthorizedTransactionToDoubledTransaction() {
-    Repository<Account> mockRepository = createRepositoryMock(Arrays.asList(new Account(true, 20)));
+    var account = new Account(true, 100);
+
+    var now = new Date();
+
+    var lastedTransaction = new Transaction("Merchant Test", 30, now);
+    account.authorizedTransaction(lastedTransaction);
+
+    Repository<Account> mockRepository = createRepositoryMock(Arrays.asList(account));
 
     var authorizationTransaction = new AuthorizationTransaction(mockRepository);
     var outputAccount =
-        authorizationTransaction.authorize(
-            new InputTransaction(new TransactionRef("Merchant Test", 200, new Date())));
+            authorizationTransaction.authorize(
+                    new InputTransaction(new TransactionRef("Merchant Test", 30, now)));
 
     var expected =
-        new OutputAccount(new AccountRef(true, 20), new String[] {"doubled-transaction"});
+            new OutputAccount(new AccountRef(true, 70), new String[] {"doubled-transaction"});
 
     assertEquals(expected, outputAccount);
   }
