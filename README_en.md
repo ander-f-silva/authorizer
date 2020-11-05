@@ -51,14 +51,14 @@ To run the tests, type the command below:
 To build the project:
 
 ```dockerfile
- docker run --rm -v $ PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean package
+ docker run --rm -v $PWD:/app -w /app maven:3.6.3-jdk-11 mvn clean package
 ```
 
 ***Note***: Unfortunately and even for the time being, I was unable to make a way that before running the tests or performing the buil, it is not downloading the maven's dependencies.
 
 To build the project:
 
-```java
+```dockerfile
  docker run --rm -v $PWD:/app -w/app openjdk:11 java -jar ./target/authorizer-1.0-SNAPSHOT.jar ./operations
 ```
 
